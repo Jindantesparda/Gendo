@@ -1,0 +1,15 @@
+{
+  "name": "gendo",
+  "productName": "Gendo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Gendo - a unified graphics and 3D reconstruction workbench",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

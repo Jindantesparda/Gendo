@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Local runtime data (large job outputs and logs)
+workspace/
+
+# Machine-specific configuration
+config.json
+
+# Environment / secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Logs
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

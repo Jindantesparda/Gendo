@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob: http://127.0.0.1:*; media-src 'self' blob: http://127.0.0.1:*; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src 'self' http://127.0.0.1:*; connect-src 'self' http://127.0.0.1:*;">
+  <title>Gendo</title>
+  <link rel="icon" type="image/png" href="../assets/gendo-logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-wand" viewBox="0 0 24 24"><path d="m4 20 11-11"/><path d="m14 3 .9 2.1L17 6l-2.1.9L14 9l-.9-2.1L11 6l2.1-.9L14 3Z"/><path d="m19 10 .7 1.5 1.3.5-1.3.6L19 14l-.7-1.4-1.3-.6 1.3-.5L19 10Z"/><path d="m5 4 .8 1.8L8 6.5l-2.2.8L5 9l-.8-1.7L2 6.5l2.2-.7L5 4Z"/></symbol>
+    <symbol id="i-compress" viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><path d="m8 15 4 4 4-4"/></symbol>
+    <symbol id="i-face" viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 16v2a2 2 0 0 1-2 2h-2"/><path d="M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/><path d="M9.5 14.5c.7.8 1.5 1.2 2.5 1.2s1.8-.4 2.5-1.2"/></symbol>
+    <symbol id="i-motion" viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="2"/><path d="m11 22 .7-5.2-2.2-2.1 1-4.7-2.4 1.8L6 14.5"/><path d="m12.5 10.5 3.2 1.9 1.3 4.1"/><path d="m14.2 7 3.1 2.2.9 3.1"/><path d="m12 16.8 2.8 2.7L17 22"/></symbol>
+    <symbol id="i-sharp" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 16 3.5-5 2.5 3 2-2.5 2.5 4.5"/><circle cx="8" cy="8" r="1"/><path d="M17 2v3"/><path d="M17 19v3"/><path d="M2 15h3"/><path d="M19 15h3"/></symbol>
+    <symbol id="i-body" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2.2"/><path d="M12 6.2v6.3"/><path d="m7 9 5 1.5L17 9"/><path d="m12 12.5-3.2 4"/><path d="m12 12.5 3.2 4"/><path d="m8.8 16.5-1.2 4.5"/><path d="m15.2 16.5 1.2 4.5"/></symbol>
+    <symbol id="i-fuse" viewBox="0 0 24 24"><circle cx="8" cy="7" r="3.2"/><path d="M3 20a5 5 0 0 1 5-5h1.2"/><circle cx="17" cy="14" r="3"/><path d="M13 21h7"/><path d="m10 10 3.2 2.4"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 5 14 2.5-7h4"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h10"/><path d="M18 6h2"/><circle cx="16" cy="6" r="2"/><path d="M4 12h2"/><path d="M10 12h10"/><circle cx="8" cy="12" r="2"/><path d="M4 18h10"/><path d="M18 18h2"/><circle cx="16" cy="18" r="2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12"/><path d="m18 6-12 12"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="m20 4-9 9"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 3.5 19h17Z"/><path d="M12 9v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 1v4"/><path d="M15 1v4"/><path d="M9 19v4"/><path d="M15 19v4"/><path d="M1 9h4"/><path d="M19 9h4"/><path d="M1 15h4"/><path d="M19 15h4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.5 9a7 7 0 0 1 11.4-2L20 12"/><path d="M18.5 15a7 7 0 0 1-11.4 2L4 12"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6Z"/><path d="M14 2v5h5"/><path d="M9 12h6"/><path d="M9 16h6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m4 17 5-5 4 4 3-3 4 4"/></symbol>
+    <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16"/><path d="M17 4v16"/><path d="M3 9h4"/><path d="M3 15h4"/><path d="M17 9h4"/><path d="M17 15h4"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5Z"/><path d="m3 7 9 5 9-5"/><path d="M3 7v10l9 5 9-5V7"/><path d="M12 12v10"/></symbol>
+    <symbol id="i-log" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 10h10"/><path d="M4 15h16"/><path d="M4 20h7"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></symbol>
+  </svg>
+
+  <div id="appLoading" class="loading-screen">
+    <div class="loading-brand">
+      <div class="brand-mark large"><img class="brand-logo" src="../assets/gendo-mark.png" alt=""></div>
+      <div>
+        <div class="loading-word">GENDO</div>
+        <div class="loading-sub">GRAPHICS WORKBENCH</div>
+      </div>
+    </div>
+    <div class="loading-track"><span></span></div>
+    <div class="loading-status" id="loadingStatus">Connecting local runtimes…</div>
+  </div>
+
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><img class="brand-logo" src="../assets/gendo-mark.png" alt=""></div>
+        <div class="brand-copy">
+          <span class="brand-name">GENDO</span>
+          <span class="brand-sub">GRAPHICS WORKBENCH</span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" data-page="overview">
+          <svg><use href="#i-grid"></use></svg><span>Overview</span>
+        </button>
+
+        <div class="nav-label">Image pipeline</div>
+        <button class="nav-item" data-page="dlss">
+          <svg><use href="#i-wand"></use></svg><span>DLSS 5 Enhance</span>
+          <span class="nav-dot" data-service-dot="dlss"></span>
+        </button>
+        <button class="nav-item" data-page="mazanoke">
+          <svg><use href="#i-compress"></use></svg><span>Mazanoke</span>
+          <span class="nav-dot" data-service-dot="mazanoke"></span>
+        </button>
+
+        <div class="nav-label">3D reconstruction</div>
+        <button class="nav-item" data-page="deca">
+          <svg><use href="#i-face"></use></svg><span>DECA Head</span>
+          <span class="nav-dot" data-model-dot="deca"></span>
+        </button>
+        <button class="nav-item" data-page="gvhmr">
+          <svg><use href="#i-motion"></use></svg><span>GVHMR Motion</span>
+          <span class="nav-dot" data-model-dot="gvhmr"></span>
+        </button>
+        <button class="nav-item" data-page="sharp">
+          <svg><use href="#i-sharp"></use></svg><span>SHARP View</span>
+          <span class="nav-dot" data-model-dot="sharp"></span>
+        </button>
+        <button class="nav-item" data-page="sam">
+          <svg><use href="#i-body"></use></svg><span>SAM 3D Body</span>
+          <span class="nav-dot" data-model-dot="sam"></span>
+        </button>
+
+        <div class="nav-label">Composition</div>
+        <button class="nav-item" data-page="fusion">
+          <svg><use href="#i-fuse"></use></svg><span>Head Fusion</span>
+          <span class="nav-dot" data-model-dot="fusion"></span>
+        </button>
+
+        <div class="nav-label">System</div>
+        <button class="nav-item" data-page="activity">
+          <svg><use href="#i-activity"></use></svg><span>Activity</span>
+          <span class="nav-count" id="navJobCount" hidden>0</span>
+        </button>
+        <button class="nav-item" data-page="settings">
+          <svg><use href="#i-settings"></use></svg><span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="mini-system" id="miniSystem">
+          <div class="mini-system-head">
+            <span class="live-dot"></span>
+            <span>Local workstation</span>
+          </div>
+          <div class="mini-gpu" id="miniGpu">Detecting GPU…</div>
+          <div class="mini-bar"><span id="miniVramBar"></span></div>
+          <div class="mini-foot"><span id="miniVramText">—</span><span id="miniDiskText">—</span></div>
+        </div>
+        <div class="sidebar-version">
+          <span>GENDO LOCAL BUILD</span>
+          <span class="version" id="appVersion">v0.1</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="page-heading">
+          <div class="eyebrow" id="pageEyebrow">WORKBENCH</div>
+          <div class="title-row">
+            <h1 id="pageTitle">Overview</h1>
+            <span class="title-slash">/</span>
+            <p id="pageSubtitle">Your local graphics workstation.</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="button primary small top-new-job" id="topNewJobBtn" data-page="deca">
+            <svg><use href="#i-play"></use></svg>
+            New job
+          </button>
+          <span id="heroReadyModels" hidden></span>
+          <span id="heroRuntime" hidden></span>
+          <button class="icon-button" id="openWorkspaceBtn" title="Open workspace">
+            <svg><use href="#i-folder"></use></svg>
+          </button>
+          <button class="top-action" data-page="activity">
+            <span class="top-action-dot"></span>
+            <span id="topActionText">No active jobs</span>
+            <svg><use href="#i-chevron"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="content" id="content">
+        <section class="page active" id="page-overview">
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-icon"><svg><use href="#i-activity"></use></svg></div>
+              <div><span class="stat-label">Running now</span><strong id="statRunning">0</strong></div>
+              <span class="stat-note" id="statQueue">Queue clear</span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><svg><use href="#i-check"></use></svg></div>
+              <div><span class="stat-label">Completed</span><strong id="statCompleted">0</strong></div>
+              <span class="stat-note">local jobs</span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><svg><use href="#i-chip"></use></svg></div>
+              <div><span class="stat-label">Runtimes ready</span><strong id="statReady">0 / 0</strong></div>
+              <span class="stat-note" id="statReadyNote">checking</span>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><svg><use href="#i-folder"></use></svg></div>
+              <div><span class="stat-label">Workspace free</span><strong id="statDisk">—</strong></div>
+              <span class="stat-note">available</span>
+            </div>
+          </div>
+
+          <div class="section-head">
+            <div>
+              <div class="eyebrow">TOOLS</div>
+              <h3>Workspace tools</h3>
+            </div>
+            <span class="section-note" id="toolboxNote">Each runtime is checked locally before launch.</span>
+          </div>
+          <div class="tool-grid" id="toolGrid"></div>
+
+          <div class="lower-grid">
+            <section class="panel recent-panel">
+              <div class="panel-head">
+                <div>
+                  <div class="eyebrow">ACTIVITY</div>
+                  <h3>Recent jobs</h3>
+                </div>
+                <button class="text-button" data-page="activity">View all <svg><use href="#i-chevron"></use></svg></button>
+              </div>
+              <div id="recentJobs" class="recent-list"></div>
+            </section>
+            <section class="panel system-panel">
+              <div class="panel-head">
+                <div>
+                  <div class="eyebrow">SYSTEM</div>
+                  <h3>Workstation</h3>
+                </div>
+                <button class="icon-button small" id="refreshSystemBtn" title="Refresh system info"><svg><use href="#i-refresh"></use></svg></button>
+              </div>
+              <div id="systemSnapshot"></div>
+            </section>
+            <section class="panel recent-outputs-panel">
+              <div class="panel-head">
+                <div>
+                  <div class="eyebrow">OUTPUTS</div>
+                  <h3>Recent files</h3>
+                </div>
+                <button class="text-button" data-page="activity">View all <svg><use href="#i-chevron"></use></svg></button>
+              </div>
+              <div id="recentOutputs" class="recent-output-grid"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="page embed-page" id="page-dlss">
+          <div class="service-shell">
+            <div class="service-bar">
+              <div class="service-identity">
+                <span class="service-dot" id="dlssDot"></span>
+                <div><strong>DLSS 5 Visual Enhancer</strong><span id="dlssStatusText">Not running</span></div>
+              </div>
+              <div class="service-actions">
+                <button class="button small ghost" id="dlssOpenOutputsBtn"><svg><use href="#i-folder"></use></svg>Outputs</button>
+                <button class="button small ghost" id="dlssReloadBtn" hidden><svg><use href="#i-refresh"></use></svg>Reload</button>
+                <button class="button small ghost" id="dlssStopBtn" hidden><svg><use href="#i-stop"></use></svg>Stop</button>
+                <button class="button small primary" id="dlssStartBtn"><svg><use href="#i-play"></use></svg>Launch</button>
+              </div>
+            </div>
+            <div class="service-stage">
+              <div class="service-empty" id="dlssEmpty">
+                <div class="service-glyph"><svg><use href="#i-wand"></use></svg></div>
+                <div class="eyebrow accent">EMBEDDED SERVICE</div>
+                <h2>DLSS 5, inside Gendo.</h2>
+                <p>Neural image enhancement, video enhancement and frame interpolation. The service starts locally and keeps your media on this machine.</p>
+                <button class="button primary" id="dlssLaunchBtn"><svg><use href="#i-play"></use></svg>Launch DLSS 5</button>
+                <div class="empty-note">First launch can take 30–60 seconds while model libraries load.</div>
+                <pre class="service-log-preview" id="dlssErrorLog" hidden></pre>
+              </div>
+              <div class="service-loading" id="dlssLoading" hidden>
+                <div class="spinner large"></div>
+                <h3>Bringing DLSS online</h3>
+                <p id="dlssLoadingText">Loading Gradio, CUDA and enhancement models…</p>
+                <div class="indeterminate"><span></span></div>
+              </div>
+              <webview id="dlssWebview" class="service-frame" hidden></webview>
+            </div>
+          </div>
+        </section>
+
+        <section class="page embed-page" id="page-mazanoke">
+          <div class="service-shell">
+            <div class="service-bar">
+              <div class="service-identity">
+                <span class="service-dot" id="mazanokeDot"></span>
+                <div><strong>Mazanoke</strong><span id="mazanokeStatusText">Starting local app…</span></div>
+              </div>
+              <div class="service-actions">
+                <button class="button small ghost" id="mazanokeOpenFolderBtn"><svg><use href="#i-folder"></use></svg>App folder</button>
+                <button class="button small ghost" id="mazanokeReloadBtn" hidden><svg><use href="#i-refresh"></use></svg>Reload</button>
+                <button class="button small primary" id="mazanokeStartBtn" hidden><svg><use href="#i-play"></use></svg>Start</button>
+              </div>
+            </div>
+            <div class="service-stage">
+              <div class="service-empty" id="mazanokeEmpty">
+                <div class="service-glyph"><svg><use href="#i-compress"></use></svg></div>
+                <div class="eyebrow accent">ON-DEVICE IMAGE TOOL</div>
+                <h2>Smaller files. Same pixels.</h2>
+                <p>Mazanoke runs entirely in the embedded browser. Convert, resize and compress images without uploading anything.</p>
+                <button class="button primary" id="mazanokeLaunchBtn"><svg><use href="#i-play"></use></svg>Start Mazanoke</button>
+              </div>
+              <div class="service-loading" id="mazanokeLoading" hidden>
+                <div class="spinner large"></div>
+                <h3>Serving Mazanoke locally</h3>
+                <p>Mounting the app and its offline assets…</p>
+                <div class="indeterminate"><span></span></div>
+              </div>
+              <webview id="mazanokeWebview" class="service-frame" hidden></webview>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" id="page-deca">
+          <form id="decaForm" class="page-grid">
+            <div class="stack">
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">SOURCE</div><h3>Portrait images</h3><p>Front-facing portraits with a visible face work best.</p></div>
+                  <span class="count-badge" id="decaFileCount">0</span>
+                </div>
+                <div class="dropzone" id="decaDrop" data-store="deca" data-kind="image">
+                  <div class="drop-icon"><svg><use href="#i-upload"></use></svg></div>
+                  <strong>Drop portraits here</strong>
+                  <span>or click to browse · PNG, JPG, WebP, TIFF</span>
+                </div>
+                <div class="file-list" id="decaFiles"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">GEOMETRY</div><h3>Output controls</h3><p>Choose what DECA should generate for each image.</p></div>
+                </div>
+                <div class="option-grid">
+                  <label class="switch-card"><input type="checkbox" id="decaSaveObj" checked><span class="switch"></span><span><strong>Detailed OBJ</strong><small>Head mesh, MTL and texture</small></span></label>
+                  <label class="switch-card"><input type="checkbox" id="decaSaveDepth"><span class="switch"></span><span><strong>Depth map</strong><small>Extra depth visualization</small></span></label>
+                  <label class="switch-card"><input type="checkbox" id="decaUseTex"><span class="switch"></span><span><strong>FLAME texture</strong><small>Use the downloaded albedo model</small></span></label>
+                  <label class="switch-card"><input type="checkbox" id="decaExtractTex" checked><span class="switch"></span><span><strong>Extract input texture</strong><small>Sample color from the portrait</small></span></label>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Rasterizer</span><select id="decaRasterizer"><option value="pytorch3d" selected>PyTorch3D · GPU</option></select></label>
+                  <label class="field"><span>Device</span><select id="decaDevice"><option value="cuda">CUDA</option><option value="cpu">CPU</option></select></label>
+                </div>
+              </section>
+            </div>
+
+            <aside class="run-panel">
+              <div class="run-head"><div><div class="eyebrow">DECA</div><h3>Head reconstruction</h3></div><span class="runtime-chip">deca_py310</span></div>
+              <div class="run-summary" id="decaSummary">No images selected.</div>
+              <div class="run-specs">
+                <div><span>Outputs</span><strong id="decaOutputSpec">OBJ · renders</strong></div>
+                <div><span>Runtime</span><strong>CUDA · local</strong></div>
+                <div><span>Model</span><strong id="decaModelState">checking…</strong></div>
+              </div>
+              <button class="button primary run-button" type="submit" id="decaRunBtn"><svg><use href="#i-play"></use></svg>Run reconstruction</button>
+              <p class="run-hint">Results are written to the Gendo workspace and appear in Activity.</p>
+              <div class="run-foot"><span class="status-led ready"></span><span>All processing stays on this machine.</span></div>
+            </aside>
+          </form>
+        </section>
+
+        <section class="page" id="page-gvhmr">
+          <form id="gvhmrForm" class="page-grid">
+            <div class="stack">
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">SOURCE</div><h3>Motion video</h3><p>One person in frame. Full-body shots produce the cleanest tracking.</p></div>
+                  <span class="count-badge" id="gvhmrFileCount">0</span>
+                </div>
+                <div class="dropzone" id="gvhmrDrop" data-store="gvhmr" data-kind="video" data-single="true">
+                  <div class="drop-icon"><svg><use href="#i-upload"></use></svg></div>
+                  <strong>Drop a video here</strong>
+                  <span>or click to browse · MP4, MOV, MKV, WebM</span>
+                </div>
+                <div class="file-list" id="gvhmrFiles"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">TRACKING</div><h3>Camera recovery</h3><p>Static shots are faster and avoid visual odometry.</p></div>
+                </div>
+                <div class="segmented" id="gvhmrCameraMode">
+                  <label><input type="radio" name="gvhmrCamera" value="static" checked><span><strong>Static</strong><small>Skip VO</small></span></label>
+                  <label><input type="radio" name="gvhmrCamera" value="simplevo"><span><strong>SimpleVO</strong><small>Moving camera</small></span></label>
+                  <label><input type="radio" name="gvhmrCamera" value="dpvo"><span><strong>DPVO</strong><small>Heavy tracking</small></span></label>
+                </div>
+                <div class="field-row">
+                  <label class="field"><span>Focal length <em>optional</em></span><input id="gvhmrFocal" type="number" min="1" placeholder="Auto estimate"></label>
+                </div>
+                <label class="switch-card inline compact"><input type="checkbox" id="gvhmrVerbose"><span class="switch"></span><span><strong>Save diagnostic overlays</strong><small>Bounding boxes and pose previews</small></span></label>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">DELIVERABLES</div><h3>Mesh exports</h3><p>Choose the FBX formats to build after motion recovery.</p></div>
+                </div>
+                <div class="option-grid">
+                  <label class="switch-card"><input type="checkbox" id="gvhmrExportFbx" checked><span class="switch"></span><span><strong>Animated FBX</strong><small>Per-frame blendshape cache</small></span></label>
+                  <label class="switch-card"><input type="checkbox" id="gvhmrExportRig"><span class="switch"></span><span><strong>Rigged FBX</strong><small>55-bone armature · T-pose bind</small></span></label>
+                </div>
+                <p class="panel-note">Rigged export rebuilds the SMPL-X skeleton and skin weights from <code>hmr4d_results.pt</code>, ready for cloth simulation and re-posing.</p>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">ANIMATION</div><h3>Pose bookends</h3><p>Optionally start and end the exported animation in a neutral T-pose or A-pose.</p></div>
+                </div>
+                <div class="segmented" id="gvhmrBookendPose">
+                  <label><input type="radio" name="gvhmrBookend" value="none" checked><span><strong>None</strong><small>Keep source pose</small></span></label>
+                  <label><input type="radio" name="gvhmrBookend" value="tpose"><span><strong>T-pose</strong><small>Arms horizontal</small></span></label>
+                  <label><input type="radio" name="gvhmrBookend" value="apose"><span><strong>A-pose</strong><small>Arms 45° down</small></span></label>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Hold frames</span><input id="gvhmrBookendHold" type="number" min="1" max="120" step="1" value="15"><small>Frames the pose is held at each end.</small></label>
+                  <label class="field"><span>Blend frames</span><input id="gvhmrBookendBlend" type="number" min="0" max="120" step="1" value="15"><small>Frames used at each end to enter and leave the motion.</small></label>
+                </div>
+                <p class="panel-note bookend-note" id="gvhmrBookendTimeline">No bookend frames will be added.</p>
+                <p class="panel-note">Bookends are baked into the mesh cache and both FBX exports. Preview videos keep their original timing. The root position and facing come from the source endpoints. Hold and blend are measured at the source frame rate.</p>
+              </section>
+            </div>
+
+            <aside class="run-panel">
+              <div class="run-head"><div><div class="eyebrow">GVHMR</div><h3>Human motion</h3></div><span class="runtime-chip">gvhmr</span></div>
+              <div class="run-summary" id="gvhmrSummary">No video selected.</div>
+              <div class="run-specs">
+                <div><span>Deliverables</span><strong id="gvhmrOutputSpec">2 videos</strong></div>
+                <div><span>Camera</span><strong id="gvhmrCameraSpec">Static</strong></div>
+                <div><span>Bookends</span><strong id="gvhmrBookendSpec">None</strong></div>
+                <div><span>Runtime</span><strong>CUDA · local</strong></div>
+              </div>
+              <button class="button primary run-button" type="submit" id="gvhmrRunBtn"><svg><use href="#i-play"></use></svg>Recover motion</button>
+              <p class="run-hint">FBX exports run Blender in background mode. The rigged mesh adds a separate T-pose armature build.</p>
+              <div class="run-foot"><span class="status-led ready"></span><span>Serialized to protect 6 GB VRAM.</span></div>
+            </aside>
+          </form>
+        </section>
+
+        <section class="page" id="page-sharp">
+          <form id="sharpForm" class="page-grid">
+            <div class="stack">
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">SOURCE</div><h3>Reference images</h3><p>One image becomes one Gaussian scene. Batch multiple views if needed.</p></div>
+                  <span class="count-badge" id="sharpFileCount">0</span>
+                </div>
+                <div class="dropzone" id="sharpDrop" data-store="sharp" data-kind="image">
+                  <div class="drop-icon"><svg><use href="#i-upload"></use></svg></div>
+                  <strong>Drop images here</strong>
+                  <span>or click to browse · PNG, JPG, WebP</span>
+                </div>
+                <div class="file-list" id="sharpFiles"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">SYNTHESIS</div><h3>Scene output</h3><p>Gaussians are metric and can be opened in any compatible 3DGS renderer.</p></div>
+                </div>
+                <div class="option-grid">
+                  <label class="switch-card"><input type="checkbox" id="sharpRender" checked><span class="switch"></span><span><strong>Render camera move</strong><small>MP4 preview via gsplat</small></span></label>
+                  <div class="switch-card static-option"><span class="check-badge">✓</span><span><strong>Export PLY splats</strong><small>Always included</small></span></div>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Device</span><select id="sharpDevice"><option value="cuda">CUDA</option><option value="cpu">CPU</option></select></label>
+                  <div class="field static-field"><span>Checkpoint</span><strong id="sharpCheckpointName">sharp_2572gikvuh.pt</strong><small>Cached locally · no download</small></div>
+                </div>
+              </section>
+            </div>
+
+            <aside class="run-panel">
+              <div class="run-head"><div><div class="eyebrow">SHARP</div><h3>Gaussian synthesis</h3></div><span class="runtime-chip">sharp_gpu</span></div>
+              <div class="run-summary" id="sharpSummary">No images selected.</div>
+              <div class="run-specs">
+                <div><span>Outputs</span><strong id="sharpOutputSpec">PLY · MP4</strong></div>
+                <div><span>Speed</span><strong>sub-second inference</strong></div>
+                <div><span>Model</span><strong id="sharpModelState">checking…</strong></div>
+              </div>
+              <button class="button primary run-button" type="submit" id="sharpRunBtn"><svg><use href="#i-play"></use></svg>Generate scene</button>
+              <p class="run-hint">The trajectory render needs CUDA. Turn it off for CPU-only splat prediction.</p>
+              <div class="run-foot"><span class="status-led ready"></span><span>Outputs keep the source image names.</span></div>
+            </aside>
+          </form>
+        </section>
+
+        <section class="page" id="page-sam">
+          <form id="samForm" class="page-grid">
+            <div class="stack">
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">SOURCE</div><h3>Human images</h3><p>Full-body images with clear silhouettes. Multiple people are detected automatically.</p></div>
+                  <span class="count-badge" id="samFileCount">0</span>
+                </div>
+                <div class="dropzone" id="samDrop" data-store="sam" data-kind="image">
+                  <div class="drop-icon"><svg><use href="#i-upload"></use></svg></div>
+                  <strong>Drop human photos here</strong>
+                  <span>or click to browse · PNG, JPG, WebP</span>
+                </div>
+                <div class="file-list" id="samFiles"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">RECONSTRUCTION</div><h3>Detector & framing</h3><p>Fast mode uses the locally cached Faster R-CNN detector.</p></div>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Human detector</span><select id="samDetector">
+                    <option value="fasterrcnn" selected>Faster R-CNN · instant</option>
+                    <option value="vitdet">ViTDet · best quality</option>
+                    <option value="sam3">SAM 3 · promptable</option>
+                  </select><small>ViTDet and SAM 3 may download weights on first use.</small></label>
+                  <label class="field"><span>Camera FOV</span><select id="samFov">
+                    <option value="" selected>Default FOV · no extra model</option>
+                    <option value="moge2">MoGe2 · downloaded on first use</option>
+                  </select><small>Default is faster and keeps memory low.</small></label>
+                </div>
+                <label class="range-field">
+                  <div><span>Detection threshold</span><output id="samBboxValue">0.50</output></div>
+                  <input id="samBbox" type="range" min="0.1" max="0.95" step="0.05" value="0.5">
+                  <small>Lower values catch more people but can include false positives.</small>
+                </label>
+              </section>
+            </div>
+
+            <aside class="run-panel">
+              <div class="run-head"><div><div class="eyebrow">SAM 3D BODY</div><h3>Full-body mesh</h3></div><span class="runtime-chip">sam_3d_body</span></div>
+              <div class="run-summary" id="samSummary">No images selected.</div>
+              <div class="run-specs">
+                <div><span>Outputs</span><strong>JPG · PLY per person</strong></div>
+                <div><span>Detector</span><strong id="samDetectorSpec">Faster R-CNN</strong></div>
+                <div><span>Model</span><strong id="samModelState">checking…</strong></div>
+              </div>
+              <button class="button primary run-button" type="submit" id="samRunBtn"><svg><use href="#i-play"></use></svg>Reconstruct bodies</button>
+              <p class="run-hint">This is SAM 3D Body (MHR). SAM 3D Objects is a separate model and is not installed.</p>
+              <div class="run-foot"><span class="status-led ready"></span><span>Face and hand detail are included.</span></div>
+            </aside>
+          </form>
+        </section>
+
+        <section class="page" id="page-fusion">
+          <form id="fusionForm" class="page-grid">
+            <div class="stack">
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">SOURCES</div><h3>Body + face performance</h3><p>GVHMR supplies the body and skeleton. DECA supplies the detailed face and expressions.</p></div>
+                </div>
+                <div class="segmented" id="fusionSourceMode">
+                  <label><input type="radio" name="fusionSource" value="same" checked><span><strong>Same video</strong><small>Face and body together</small></span></label>
+                  <label><input type="radio" name="fusionSource" value="separate"><span><strong>Separate face clip</strong><small>Retarget another performance</small></span></label>
+                </div>
+                <div class="fusion-source-grid">
+                  <div class="fusion-source">
+                    <div class="fusion-source-head"><span>BODY MOTION</span><span class="count-badge" id="fusionBodyFileCount">0</span></div>
+                    <div class="dropzone" id="fusionBodyDrop" data-store="fusionBody" data-kind="video" data-single="true" data-title="Choose the body motion video">
+                      <div class="drop-icon"><svg><use href="#i-upload"></use></svg></div>
+                      <strong>Drop performance video here</strong>
+                      <span>or click to browse · MP4, MOV, MKV, WebM</span>
+                    </div>
+                    <div class="file-list" id="fusionBodyFiles"></div>
+                  </div>
+                  <div class="fusion-source" id="fusionFaceSourcePanel" hidden>
+                    <div class="fusion-source-head"><span>FACE PERFORMANCE</span><span class="count-badge" id="fusionFaceFileCount">0</span></div>
+                    <div class="dropzone" id="fusionFaceDrop" data-store="fusionFace" data-kind="video" data-single="true" data-title="Choose the face performance video">
+                      <div class="drop-icon"><svg><use href="#i-upload"></use></svg></div>
+                      <strong>Drop face video here</strong>
+                      <span>Close, well-lit face shots give the best texture</span>
+                    </div>
+                    <div class="file-list" id="fusionFaceFiles"></div>
+                  </div>
+                </div>
+                <p class="panel-note" id="fusionSourceNote">One clip drives both the body skeleton and the DECA facial performance.</p>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">BODY TRACKING</div><h3>Camera recovery</h3><p>Static camera is fastest. Use moving-camera recovery only when the shot needs it.</p></div>
+                </div>
+                <div class="segmented" id="fusionCameraMode">
+                  <label><input type="radio" name="fusionCamera" value="static" checked><span><strong>Static</strong><small>Skip VO</small></span></label>
+                  <label><input type="radio" name="fusionCamera" value="simplevo"><span><strong>SimpleVO</strong><small>Moving camera</small></span></label>
+                  <label><input type="radio" name="fusionCamera" value="dpvo"><span><strong>DPVO</strong><small>Heavy tracking</small></span></label>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head">
+                  <div><div class="eyebrow">FACIAL TRANSFER</div><h3>Head fit</h3><p>DECA's global head rotation is removed; GVHMR's head and neck bones drive the head.</p></div>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Face timing</span><select id="fusionSync">
+                    <option value="fit" selected>Stretch face to body</option>
+                    <option value="offset">Start at frame offset</option>
+                  </select><small>Stretch is recommended for different clips.</small></label>
+                  <label class="field"><span>Face frame offset <em>optional</em></span><input id="fusionFaceOffset" type="number" step="1" value="0"><small>Only used with the offset timing mode.</small></label>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Head scale</span><input id="fusionHeadScale" type="number" min="0.5" max="2" step="0.01" value="1"><small>1.0 maps the FLAME head joint to the SMPL-X head joint.</small></label>
+                  <label class="field"><span>Vertical offset (m)</span><input id="fusionHeadY" type="number" step="0.005" value="0"></label>
+                </div>
+                <div class="field-row two">
+                  <label class="field"><span>Side offset (m)</span><input id="fusionHeadX" type="number" step="0.005" value="0"></label>
+                  <label class="field"><span>Forward offset (m)</span><input id="fusionHeadZ" type="number" step="0.005" value="0"></label>
+                </div>
+                <p class="panel-note">Fine-tune the head only if the neck seam needs adjustment. The final .blend keeps the body, DECA head and 55-bone armature separate for manual fixes.</p>
+              </section>
+            </div>
+
+            <aside class="run-panel">
+              <div class="run-head"><div><div class="eyebrow">HEAD FUSION</div><h3>DECA × GVHMR</h3></div><span class="runtime-chip">deca + gvhmr</span></div>
+              <div class="run-summary" id="fusionSummary">No video selected.</div>
+              <div class="run-specs">
+                <div><span>Outputs</span><strong>Rigged FBX · Blender</strong></div>
+                <div><span>Face sync</span><strong id="fusionSyncSpec">Same video</strong></div>
+                <div><span>Pipeline</span><strong>DECA + GVHMR</strong></div>
+              </div>
+              <button class="button primary run-button" type="submit" id="fusionRunBtn" disabled><svg><use href="#i-play"></use></svg>Build fused character</button>
+              <p class="run-hint">This runs GVHMR, DECA and two Blender passes. Use a close, well-lit face clip for a cleaner texture.</p>
+              <div class="run-foot"><span class="status-led ready"></span><span>55-bone body rig + facial shape keys.</span></div>
+            </aside>
+          </form>
+        </section>
+
+        <section class="page activity-page" id="page-activity">
+          <div class="activity-layout">
+            <aside class="job-list-panel panel">
+              <div class="panel-head tight">
+                <div><div class="eyebrow">QUEUE</div><h3>Jobs</h3></div>
+                <button class="icon-button small" id="refreshJobsBtn" title="Refresh jobs"><svg><use href="#i-refresh"></use></svg></button>
+              </div>
+              <div class="filter-row" id="jobFilters">
+                <button class="filter active" data-filter="all">All</button>
+                <button class="filter" data-filter="running">Active</button>
+                <button class="filter" data-filter="completed">Done</button>
+                <button class="filter" data-filter="failed">Issues</button>
+              </div>
+              <div class="job-list" id="jobList"></div>
+            </aside>
+            <section class="job-detail-panel panel" id="jobDetail">
+              <div class="empty-state tall">
+                <div class="empty-icon"><svg><use href="#i-activity"></use></svg></div>
+                <h3>No job selected</h3>
+                <p>Run any tool or pick a job from the queue to see its outputs and logs.</p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <form id="settingsForm" class="settings-grid">
+            <div class="stack">
+              <section class="panel">
+                <div class="panel-head"><div><div class="eyebrow">WORKSPACE</div><h3>Storage & performance</h3><p>All generated media and job manifests live here.</p></div></div>
+                <label class="field"><span>Workspace folder</span><div class="input-action"><input id="setWorkspace" data-config-path="workspace"><button type="button" class="button small ghost" data-browse-path="setWorkspace" data-folder="true">Browse</button><button type="button" class="button small ghost" data-open-path="workspace">Open</button></div></label>
+                <div class="field-row two">
+                  <label class="field"><span>Concurrent native jobs</span><select id="setConcurrency" data-config-path="maxConcurrentJobs"><option value="1">1 · protect 6 GB VRAM</option><option value="2">2 · overlap light jobs</option></select></label>
+                  <div class="field static-field"><span>Config file</span><strong>config.json</strong><small>Next to the Gendo launcher</small></div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-head"><div><div class="eyebrow">MODEL RUNTIMES</div><h3>Executable & checkpoint paths</h3><p>Change these if you move an install or create a new environment.</p></div><button type="button" class="text-button" id="resetPathsBtn">Reset defaults</button></div>
+                <div id="settingsPathGroups" class="settings-path-groups"></div>
+              </section>
+            </div>
+
+            <aside class="stack">
+              <section class="panel sticky-panel">
+                <div class="panel-head"><div><div class="eyebrow">HEALTH</div><h3>Runtime inspection</h3><p>Checked from the filesystem, no model loading.</p></div></div>
+                <div id="settingsHealth" class="health-list"></div>
+                <button class="button primary full" type="submit" id="saveSettingsBtn"><svg><use href="#i-check"></use></svg>Save changes</button>
+                <p class="run-hint center">Path changes apply to new jobs immediately.</p>
+              </section>
+            </aside>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <button class="jobs-pill" id="jobsPill" hidden>
+    <span class="spinner small"></span>
+    <span id="jobsPillText">Job running</span>
+    <svg><use href="#i-chevron"></use></svg>
+  </button>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <div class="media-viewer" id="mediaViewer" role="dialog" aria-modal="true" aria-label="Output preview" hidden>
+    <div class="media-viewer-backdrop" data-media-close></div>
+    <div class="media-viewer-panel">
+      <div class="media-viewer-head">
+        <div class="media-viewer-copy">
+          <div class="eyebrow">OUTPUT PREVIEW</div>
+          <h3 id="mediaViewerTitle"></h3>
+          <div class="media-viewer-meta" id="mediaViewerMeta"></div>
+        </div>
+        <div class="media-viewer-actions">
+          <button type="button" class="button small ghost" id="mediaViewerOpen"><svg><use href="#i-external"></use></svg>Open file</button>
+          <button type="button" class="icon-button" id="mediaViewerClose" title="Close preview"><svg><use href="#i-x"></use></svg></button>
+        </div>
+      </div>
+      <div class="media-viewer-stage">
+        <video id="mediaViewerVideo" controls playsinline hidden></video>
+        <img id="mediaViewerImage" alt="" hidden>
+      </div>
+      <div class="media-viewer-foot">
+        <span id="mediaViewerPath"></span>
+        <span>Esc to close</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
