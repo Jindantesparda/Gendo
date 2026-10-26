@@ -1,5 +1,4 @@
 # Gendo
-# Gendo
 
 ### A unified AI workbench for computer graphics.
 
